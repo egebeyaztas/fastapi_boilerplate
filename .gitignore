@@ -1,0 +1,65 @@
+# Python related
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+*.venv
+venv/
+ENV/
+env/
+.Python
+pyenv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# SQLAlchemy specific
+*.db
+*.sqlite3
+
+# Virtual Environment
+.env
+.venv/
+ENV/
+
+# Docker related
+*.log
+docker-compose.override.yml
+db_data/
+**/__pycache__/
+
+# alembic migrations
+alembic/versions/*.pyc
+alembic/
+
+# FastAPI specific
+*.pid
+
+# Pytest
+.pytest_cache/
+coverage/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+htmlcov/
+*.pytest_cache
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+
+# macOS specific
+.DS_Store
+
+# Logs and local environment
+*.log
+*.env.local
+*.env.*.local
+.envrc
+*.local.env
