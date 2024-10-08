@@ -30,7 +30,6 @@ db_data/
 
 # alembic migrations
 alembic/versions/*.pyc
-alembic/
 
 # FastAPI specific
 *.pid
