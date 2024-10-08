@@ -1,10 +1,8 @@
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.auth.models import User
-
-from auth.schemas import UserCreateModel
-from auth.utils import generate_passwd_hash
+from auth.models import User
+from auth.utils import verify_password
 
 
 class UserService:
@@ -17,36 +15,22 @@ class UserService:
         user = result.first()
 
         return user
-
-    async def user_exists(self, email, session: AsyncSession):
-        user = await self.get_user_by_email(email, session)
-
-        return True if user is not None else False
-
-    async def create_user(
-        self, user_data: UserCreateModel, 
-        session: AsyncSession
-    ):
-        user_data_dict = user_data.model_dump()
-        new_user = User(**user_data_dict)
-        new_user.password_hash = generate_passwd_hash(
-            user_data_dict["password"]
+    
+    async def authenticate(
+        self, *,
+        session: AsyncSession,
+        email: str,
+        password: str
+    ) -> User | None:
+        db_user = await self.get_user_by_email(
+            session=session,
+            email=email
         )
-        new_user.role = "user"
-
-        session.add(new_user)
-        await session.commit()
-
-        return new_user
-
-
-    async def update_user(
-        self, user:User,
-        user_data: dict,
-        session:AsyncSession
-    ):
-        for k, v in user_data.items():
-            setattr(user, k, v)
-        await session.commit()
-
-        return user
+        if not db_user:
+            return None
+        if not verify_password(
+            password,
+            db_user.hashed_password
+        ):
+            return None
+        return db_user
